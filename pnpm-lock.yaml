@@ -1,0 +1,66 @@
+dependencies:
+  react-responsive: 8.0.1
+lockfileVersion: 5.1
+packages:
+  /css-mediaquery/0.1.2:
+    dev: false
+    resolution:
+      integrity: sha1-aiw3NEkoYYYxxUvTPO3TAdoYvqA=
+  /hyphenate-style-name/1.0.3:
+    dev: false
+    resolution:
+      integrity: sha512-EcuixamT82oplpoJ2XU4pDtKGWQ7b00CD9f1ug9IaQ3p1bkHMiKCZ9ut9QDI6qsa6cpUuB+A/I+zLtdNK4n2DQ==
+  /js-tokens/4.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==
+  /loose-envify/1.4.0:
+    dependencies:
+      js-tokens: 4.0.0
+    dev: false
+    hasBin: true
+    resolution:
+      integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
+  /matchmediaquery/0.3.0:
+    dependencies:
+      css-mediaquery: 0.1.2
+    dev: false
+    resolution:
+      integrity: sha512-u0dlv+VENJ+3YepvwSPBieuvnA6DWfaYa/ctwysAR13y4XLJNyt7bEVKzNj/Nvjo+50d88Pj+xL9xaSo6JmX/w==
+  /object-assign/4.1.1:
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
+  /prop-types/15.7.2:
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      react-is: 16.9.0
+    dev: false
+    resolution:
+      integrity: sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
+  /react-is/16.9.0:
+    dev: false
+    resolution:
+      integrity: sha512-tJBzzzIgnnRfEm046qRcURvwQnZVXmuCbscxUO5RWrGTXpon2d4c8mI0D8WE6ydVIm29JiLB6+RslkIvym9Rjw==
+  /react-responsive/8.0.1:
+    dependencies:
+      hyphenate-style-name: 1.0.3
+      matchmediaquery: 0.3.0
+      prop-types: 15.7.2
+      shallow-equal: 1.2.0
+    dev: false
+    engines:
+      node: '>= 0.10'
+    peerDependencies:
+      react: ^16.8.0
+    resolution:
+      integrity: sha512-caseFCvFFV4QW+JOl7inzDme+avoX4r7GPpQJ+04NCzIgbroV3BU0noPgHGxVCEFKm9IsgcKOBAf+6MqIUeQIg==
+  /shallow-equal/1.2.0:
+    dev: false
+    resolution:
+      integrity: sha512-Z21pVxR4cXsfwpMKMhCEIO1PCi5sp7KEp+CmOpBQ+E8GpHwKOw2sEzk7sgblM3d/j4z4gakoWEoPcjK0VJQogA==
+specifiers:
+  react-responsive: ^8.0.1

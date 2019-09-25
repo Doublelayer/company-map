@@ -1,7 +1,7 @@
 {
-  "name": "express-mongodb-rest-api-starter",
+  "name": "company-map-api",
   "version": "1.0.0",
-  "description": " A basic starter for an express.js API with mongodb",
+  "description": "REST API for find Companies by sectors",
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",

@@ -1,17 +1,17 @@
-const express = require('express');
+const express = require("express");
 
-const post = require('./post');
-const get = require('./get');
+const companies = require("./companies");
+const citys = require("./citys");
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get("/", (req, res) => {
   res.json({
-    message: 'API - 👋🌎🌍🌏'
+    message: "API - 👋🌎🌍🌏"
   });
 });
 
-router.use('/post', post);
-router.use('/get', get);
+router.use("/companies", companies);
+router.use("/city", citys);
 
 module.exports = router;

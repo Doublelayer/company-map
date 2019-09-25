@@ -1,0 +1,17 @@
+{
+  "name": "company-map-api",
+  "version": 2,
+  "builds": [
+    {
+      "src": "src/index.js",
+      "use": "@now/node"
+    }
+  ],
+  "routes": [{ "src": "/.*", "dest": "src/index.js" }],
+
+  "env": {
+    "DATABASE_URL": "@company-map-database-url",
+    "DATABASE_NAME": "@company-map-database-name",
+    "COLLECTION_NAME": "@company-map-collection-name"
+  }
+}

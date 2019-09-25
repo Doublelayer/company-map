@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import MediaQuery from "react-responsive";
 
 import "react-picky/dist/picky.css";
 
@@ -11,6 +12,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Card, CardHeader, C
 
 import mapMarker from "./map-marker.svg";
 import userMarker from "./user-marker.svg";
+import searchBtnImage from "./search_btn.png";
 
 import { getCompanySectors, getAllDocumentsBySector, searchDistinctCityBy } from "./CompanyApi";
 import { getCityNameByLatitudeAndLongitude, getCoordinatesByCityName, getCoordinatesFromIpAdress } from "./CoordsApi";
@@ -29,7 +31,7 @@ const user = L.icon({
   popupAnchor: [0, -20]
 });
 
-const mapOptions = {
+const locationOptions = {
   enableHighAccuracy: true,
   timeout: 5000,
   maximumAge: 0
@@ -46,6 +48,8 @@ export default class App extends Component {
     this.selectMultipleOption = this.selectMultipleOption.bind(this);
     this.selectCityOption = this.selectCityOption.bind(this);
     this.asyncSearchCitys = this.asyncSearchCitys.bind(this);
+    this.togglePageIsLoading = this.togglePageIsLoading.bind(this);
+    this.toggleApiIsFetching = this.toggleApiIsFetching.bind(this);
   }
 
   state = {
@@ -67,6 +71,7 @@ export default class App extends Component {
   };
 
   sectorSubmit() {
+    this.toggleApiIsFetching();
     const query = {
       city: this.state.city,
       sectors: this.state.selectedSectorsArray
@@ -74,15 +79,21 @@ export default class App extends Component {
 
     getAllDocumentsBySector(query).then(documents => {
       this.setState({
-        companies: documents,
-        apiFetching: false
+        companies: documents
       });
+      this.toggleApiIsFetching();
     });
   }
 
   toggleInfoModal() {
     this.setState(prevState => ({
       modal: !prevState.modal
+    }));
+  }
+
+  toggleApiIsFetching() {
+    this.setState(prevState => ({
+      apiFetching: !prevState.apiFetching
     }));
   }
 
@@ -99,10 +110,16 @@ export default class App extends Component {
     });
   }
 
+  togglePageIsLoading() {
+    this.setState(prevState => ({
+      pageIsLoading: !prevState.pageIsLoading
+    }));
+  }
+
   success(location) {
     getCityNameByLatitudeAndLongitude(location.coords).then(resolvedLocation => {
       this.setUserLocation(resolvedLocation);
-      this.setState({});
+      this.togglePageIsLoading();
     });
   }
 
@@ -112,21 +129,15 @@ export default class App extends Component {
       this.setState({
         modal: true
       });
-      this.forceUpdate();
+      this.togglePageIsLoading();
     });
   }
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(this.success, this.getCurrentPositionError, locationOptions);
 
-  async componentDidMount() {
-    await Promise.all([
-      navigator.geolocation.getCurrentPosition(this.success, this.getCurrentPositionError, mapOptions),
-      getCompanySectors().then(sectors => {
-        this.setState({
-          sectorList: sectors
-        });
-      })
-    ]).then(() => {
+    getCompanySectors().then(sectors => {
       this.setState({
-        pageIsLoading: false
+        sectorList: sectors
       });
     });
   }
@@ -136,7 +147,8 @@ export default class App extends Component {
   }
 
   selectCityOption(value) {
-    this.setState({ selectedCity: value, pageIsLoading: true });
+    this.setState({ selectedCity: value });
+    this.togglePageIsLoading();
 
     getCoordinatesByCityName(value)
       .then(location => {
@@ -144,9 +156,7 @@ export default class App extends Component {
         this.sectorSubmit();
       })
       .then(() => {
-        this.setState({
-          pageIsLoading: false
-        });
+        this.togglePageIsLoading();
       });
   }
 
@@ -173,6 +183,7 @@ export default class App extends Component {
       selectedCity,
       citys
     } = this.state;
+
     const position = [this.state.location.latitude, this.state.location.longitude];
     const readyToQuery = selectedSectorsArray.length > 0;
 
@@ -188,7 +199,7 @@ export default class App extends Component {
             {companies.map(companies => (
               <Marker key={companies._id} position={[companies.latitude, companies.longitude]} icon={marker}>
                 <Popup>
-                  <a href={companies.homepage} target="_blank">
+                  <a href={companies.homepage} target="_blank" rel="noopener noreferrer">
                     {companies.name}
                   </a>
                   <br />
@@ -207,50 +218,68 @@ export default class App extends Component {
             </ModalFooter>
           </Modal>
           {!pageIsLoading ? (
-            <Card body className="search-form">
-              <CardHeader>Auswahl der Firmenbranche</CardHeader>
-              <CardBody>
-                <CardText>Suche nach einer anderen Stadt.</CardText>
-                {!apiFetching ? (
-                  <div>
-                    <Picky
-                      id="picky-city"
-                      value={selectedCity}
-                      options={citys}
-                      multiple={false}
-                      includeFilter={true}
-                      onChange={this.selectCityOption}
-                      getFilterValue={this.asyncSearchCitys}
-                      allSelectedPlaceholder={"Alle ausgewählt"}
-                      filterPlaceholder={"z.B.: Berlin"}
-                    />
-                    <CardText>Bitte wähle deine gesuchte Branche aus.</CardText>
-                    <Picky
-                      id="picky-sector"
-                      value={selectedSectorsArray}
-                      options={sectorList}
-                      multiple={true}
-                      includeSelectAll={true}
-                      includeFilter={true}
-                      onChange={this.selectMultipleOption}
-                      placeholder="Branche"
-                      selectAllText="Alle auswählen"
-                      numberDisplayed={0}
-                      manySelectedPlaceholder={"%s ausgewählt"}
-                      allSelectedPlaceholder={"Alle ausgewählt"}
-                    />
-                    <Button className="btn-form" onClick={this.sectorSubmit} disabled={!readyToQuery}>
-                      Suchen
-                    </Button>
-                  </div>
-                ) : (
-                  <BeatLoader css={"text-align:center; padding-top:20px"} color={"#0066a6"} loading={true} />
-                )}
-              </CardBody>
-            </Card>
+            <div>
+              <Card body className="search-form">
+                <CardHeader>Auswahl der Firmenbranche</CardHeader>
+                <CardBody>
+                  <CardText>Suche nach einer anderen Stadt.</CardText>
+                  {!apiFetching ? (
+                    <div>
+                      <Picky
+                        id="picky-city"
+                        value={selectedCity}
+                        options={citys}
+                        multiple={false}
+                        includeFilter={true}
+                        onChange={this.selectCityOption}
+                        getFilterValue={this.asyncSearchCitys}
+                        allSelectedPlaceholder={"Alle ausgewählt"}
+                        filterPlaceholder={"z.B.: Berlin"}
+                      />
+                      <CardText>Bitte wähle deine gesuchte Branche aus.</CardText>
+                      <Picky
+                        id="picky-sector"
+                        value={selectedSectorsArray}
+                        options={sectorList}
+                        multiple={true}
+                        includeSelectAll={true}
+                        includeFilter={true}
+                        onChange={this.selectMultipleOption}
+                        placeholder="Branche"
+                        selectAllText="Alle auswählen"
+                        numberDisplayed={0}
+                        manySelectedPlaceholder={"%s ausgewählt"}
+                        allSelectedPlaceholder={"Alle ausgewählt"}
+                      />
+                      <Button className="btn-form" onClick={this.sectorSubmit} disabled={!readyToQuery}>
+                        Suchen
+                      </Button>
+                    </div>
+                  ) : (
+                    <BeatLoader css={"text-align:center; padding-top:20px"} color={"#0066a6"} loading={true} />
+                  )}
+                </CardBody>
+              </Card>
+            </div>
           ) : (
             ""
           )}
+          <Card className="footer">
+            <CardText>
+              {" "}
+              Made with{" "}
+              <span role="img" aria-label="love">
+                💚
+              </span>{" "}
+              by{" "}
+              <a href="https://github.com/Doublelayer" target="_blank" rel="noopener noreferrer">
+                Doublelayer
+              </a>
+            </CardText>
+          </Card>
+          <MediaQuery maxDeviceWidth={1050}>
+            <img className="search-mobile-button" src={searchBtnImage} />
+          </MediaQuery>
         </LoadingOverlay>
       </div>
     );

@@ -1,6 +1,7 @@
 {
-  "name": "client",
-  "version": "0.1.0",
+  "name": "company-map-client",
+  "description": "react client app for consuming the company-map-api",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "bootstrap": "^4.3.1",

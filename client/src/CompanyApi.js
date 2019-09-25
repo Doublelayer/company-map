@@ -1,5 +1,5 @@
 const API_URL_COMPANIES =
-  window.location.hostname === "localhost" ? "http://localhost:5000/api/v1/" : "https://api.guestm.app/api/v1/messages";
+  window.location.hostname === "localhost" ? "http://localhost:5000/api/v1/" : "https://company-map-api.doublelayer.now.sh/api/v1/";
 
 export function getCompanySectors() {
   return fetch(`${API_URL_COMPANIES}companies/sectors`)
