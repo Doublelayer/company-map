@@ -1,7 +1,7 @@
 body {
   margin: 0;
   width: 100vw;
-  height: 100vh;
+  max-height: 100vh;
 }
 
 #root {
@@ -50,7 +50,7 @@ body {
 
 @media only screen and (max-width: 1050px) {
   .search-form {
-    height: fit-content;
+    height: max-content;
     margin: auto;
     top: 0;
     left: 0;
@@ -71,7 +71,24 @@ body {
   right: 35px;
   max-width: 50px;
   border-radius: 5px;
+  cursor: pointer;
   -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
   box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+.show {
+  display: block;
+}
+
+.not-show {
+  display: none;
+}
+
+select {
+  width: 100%;
+}
+
+.api-fetching {
+  text-align: center;
 }

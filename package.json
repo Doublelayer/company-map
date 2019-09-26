@@ -1,5 +1,1 @@
-{
-	"dependencies": {
-		"react-responsive": "^8.0.1"
-	}
-}
+{"dependencies":{"react-device-detect":"^1.9.10","react-select":"^3.0.5"}}

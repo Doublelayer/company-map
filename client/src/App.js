@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import MediaQuery from "react-responsive";
+import { isMobile } from "react-device-detect";
 
 import "react-picky/dist/picky.css";
 
@@ -49,13 +49,19 @@ export default class App extends Component {
     this.selectCityOption = this.selectCityOption.bind(this);
     this.asyncSearchCitys = this.asyncSearchCitys.bind(this);
     this.togglePageIsLoading = this.togglePageIsLoading.bind(this);
-    this.toggleApiIsFetching = this.toggleApiIsFetching.bind(this);
+    this.toggleApiIsFetchcing = this.toggleApiIsFetching.bind(this);
+    this.toggleShowSearchFormAndSearchBtn = this.toggleShowSearchFormAndSearchBtn.bind(this);
+    this.handleSectorChange = this.handleSectorChange.bind(this);
   }
 
   state = {
     pageIsLoading: true,
     apiFetching: false,
+    isMobile: isMobile,
+    showSearchBtn: isMobile,
+    showSearchForm: !isMobile,
     modal: false,
+    notshowSearchForm: false,
     location: {
       latitude: 0,
       longitude: 0
@@ -72,6 +78,7 @@ export default class App extends Component {
 
   sectorSubmit() {
     this.toggleApiIsFetching();
+
     const query = {
       city: this.state.city,
       sectors: this.state.selectedSectorsArray
@@ -82,6 +89,7 @@ export default class App extends Component {
         companies: documents
       });
       this.toggleApiIsFetching();
+      this.toggleShowSearchFormAndSearchBtn();
     });
   }
 
@@ -170,8 +178,29 @@ export default class App extends Component {
     }
   }
 
+  toggleShowSearchFormAndSearchBtn() {
+    this.setState(prevState => ({
+      showSearchForm: !prevState.showSearchForm,
+      showSearchBtn: !prevState.showSearchBtn
+    }));
+  }
+
+  handleSectorChange(event) {
+    const options = event.target.options;
+    const selectedArray = [];
+    for (var i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        selectedArray.push(options[i].value);
+      }
+    }
+    this.setState({ selectedSectorsArray: selectedArray });
+  }
+
   render() {
     const {
+      isMobile,
+      showSearchBtn,
+      showSearchForm,
       sectorList,
       selectedSectorsArray,
       companies,
@@ -208,8 +237,8 @@ export default class App extends Component {
               </Marker>
             ))}
           </Map>
-          <Modal isOpen={modal} toggleInfoModal={this.toggleInfoModal}>
-            <ModalHeader toggleInfoModal={this.toggleInfoModal}>Hinweis zur Standortermittlung</ModalHeader>
+          <Modal isOpen={modal}>
+            <ModalHeader>Hinweis zur Standortermittlung</ModalHeader>
             <ModalBody>Du hast die Standortermittlung nicht erlaubt. Dein Standort wurde anhand deiner IP-Adresse ermittelt!</ModalBody>
             <ModalFooter>
               <Button color="primary" onClick={this.toggleInfoModal}>
@@ -217,14 +246,14 @@ export default class App extends Component {
               </Button>
             </ModalFooter>
           </Modal>
-          {!pageIsLoading ? (
+          {!pageIsLoading && showSearchForm ? (
             <div>
               <Card body className="search-form">
-                <CardHeader>Auswahl der Firmenbranche</CardHeader>
-                <CardBody>
-                  <CardText>Suche nach einer anderen Stadt.</CardText>
-                  {!apiFetching ? (
-                    <div>
+                {!apiFetching ? (
+                  <div>
+                    <CardHeader>Auswahl der Firmenbranche</CardHeader>
+                    <CardBody>
+                      <CardText>Suche nach einer anderen Stadt.</CardText>
                       <Picky
                         id="picky-city"
                         value={selectedCity}
@@ -237,28 +266,41 @@ export default class App extends Component {
                         filterPlaceholder={"z.B.: Berlin"}
                       />
                       <CardText>Bitte wähle deine gesuchte Branche aus.</CardText>
-                      <Picky
-                        id="picky-sector"
-                        value={selectedSectorsArray}
-                        options={sectorList}
-                        multiple={true}
-                        includeSelectAll={true}
-                        includeFilter={true}
-                        onChange={this.selectMultipleOption}
-                        placeholder="Branche"
-                        selectAllText="Alle auswählen"
-                        numberDisplayed={0}
-                        manySelectedPlaceholder={"%s ausgewählt"}
-                        allSelectedPlaceholder={"Alle ausgewählt"}
-                      />
+                      {isMobile ? (
+                        <select multiple onChange={this.handleSectorChange} value={selectedSectorsArray}>
+                          {sectorList.map((sector, i) => (
+                            <option key={i} value={sector}>
+                              {sector}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <Picky
+                          id="picky-sector"
+                          value={selectedSectorsArray}
+                          options={sectorList}
+                          multiple={true}
+                          includeSelectAll={true}
+                          includeFilter={true}
+                          onChange={this.selectMultipleOption}
+                          placeholder="Branche"
+                          selectAllText="Alle auswählen"
+                          numberDisplayed={0}
+                          manySelectedPlaceholder={"%s ausgewählt"}
+                          allSelectedPlaceholder={"Alle ausgewählt"}
+                        />
+                      )}
                       <Button className="btn-form" onClick={this.sectorSubmit} disabled={!readyToQuery}>
                         Suchen
                       </Button>
-                    </div>
-                  ) : (
+                    </CardBody>
+                  </div>
+                ) : (
+                  <div className="api-fetching">
                     <BeatLoader css={"text-align:center; padding-top:20px"} color={"#0066a6"} loading={true} />
-                  )}
-                </CardBody>
+                    <em>Einen Augenblick bitte . . . </em>
+                  </div>
+                )}
               </Card>
             </div>
           ) : (
@@ -277,9 +319,11 @@ export default class App extends Component {
               </a>
             </CardText>
           </Card>
-          <MediaQuery maxDeviceWidth={1050}>
-            <img className="search-mobile-button" src={searchBtnImage} />
-          </MediaQuery>
+          {showSearchBtn ? (
+            <img className="search-mobile-button" src={searchBtnImage} onClick={this.toggleShowSearchFormAndSearchBtn} alt="Suche" />
+          ) : (
+            ""
+          )}
         </LoadingOverlay>
       </div>
     );

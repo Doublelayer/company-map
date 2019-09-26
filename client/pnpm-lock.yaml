@@ -1,11 +1,13 @@
 dependencies:
   bootstrap: 4.3.1
   leaflet: 1.5.1
+  prop-types: 15.7.2
   react: 16.9.0
+  react-device-detect: 1.9.10_react-dom@16.9.0+react@16.9.0
   react-dom: 16.9.0_react@16.9.0
   react-leaflet: 2.4.0_c98554fc27dcc3f6c1e35b7c868e405a
   react-loading-overlay: 1.0.1_react-dom@16.9.0+react@16.9.0
-  react-picky: 4.5.2_react-dom@16.9.0+react@16.9.0
+  react-picky: 4.5.2_1d862d7c3575cb6e28b49834d246a21d
   react-scripts: 3.1.2
   react-spinners: 0.6.1_react-dom@16.9.0+react@16.9.0
   reactstrap: 8.0.1_react-dom@16.9.0+react@16.9.0
@@ -874,6 +876,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-89eSBLJsxNxOERC0Op4vd+0Bqm6wRMqMbFtV3i0/fbaWw/mJ8Q3eBvgX0G4SyrOOLCtbu98HspF8o09MRT+KzQ==
+  /@babel/runtime/7.6.2:
+    dependencies:
+      regenerator-runtime: 0.13.3
+    dev: false
+    resolution:
+      integrity: sha512-EXxN64agfUqqIGeEjI5dL5z0Sw0ZwWo1mLTi4mQowCZ42O59b7DRpZAnTC6OqdF28wMBMFKNb/4uFGrVaigSpg==
   /@babel/template/7.6.0:
     dependencies:
       '@babel/code-frame': 7.5.5
@@ -8368,6 +8376,17 @@ packages:
       node: '>=8.10'
     resolution:
       integrity: sha512-VwR+mBUXPLdYk/rOz6s6qpasIFGd7GW0KXd/3bih+/qGcMQvPG19XxtjDMtiAg0zWiFwp1ugCzAjLThbzFjVqw==
+  /react-device-detect/1.9.10_react-dom@16.9.0+react@16.9.0:
+    dependencies:
+      react: 16.9.0
+      react-dom: 16.9.0_react@16.9.0
+      ua-parser-js: 0.7.20
+    dev: false
+    peerDependencies:
+      react: ^0.14.0 || ^15.0.0 || ^16.0.0
+      react-dom: ^0.14.0 || ^15.0.0 || ^16.0.0
+    resolution:
+      integrity: sha512-Rb618NuNwJojJeIgI5UoONwztbd4wMT4TBofzvYOHnPNu61LYYz8b78cXQb7kXRrPn6iI5T1gFtNQh0GxHEPxw==
   /react-dom/16.9.0_react@16.9.0:
     dependencies:
       loose-envify: 1.4.0
@@ -8421,8 +8440,9 @@ packages:
       react-dom: ^0.14 || ^15.0.0-rc || ^15.0 || ^16.0.0 || ^16.0
     resolution:
       integrity: sha512-aUjtZ8tNXBSx+MbD2SQs0boPbeTAGTh+I5U9nWjDzMasKlYr58RJpr57c8W7uApeLpOkAGbInExRi6GamNC2bA==
-  /react-picky/4.5.2_react-dom@16.9.0+react@16.9.0:
+  /react-picky/4.5.2_1d862d7c3575cb6e28b49834d246a21d:
     dependencies:
+      prop-types: 15.7.2
       react: 16.9.0
       react-dom: 16.9.0_react@16.9.0
       recompose: 0.30.0_react@16.9.0
@@ -8644,7 +8664,7 @@ packages:
       integrity: sha512-wlgPA6cCIIg9gKz0fgAPjnzh4yR/LnXovwuo9hvyGvx3h8nX4+/iLZplfUWasXpqD8BdnGnP5njOFjkUwPzvjA==
   /recompose/0.30.0_react@16.9.0:
     dependencies:
-      '@babel/runtime': 7.6.0
+      '@babel/runtime': 7.6.2
       change-emitter: 0.1.6
       fbjs: 0.8.17
       hoist-non-react-statics: 2.5.5
@@ -10704,7 +10724,9 @@ packages:
 specifiers:
   bootstrap: ^4.3.1
   leaflet: ^1.5.1
+  prop-types: ^15.7.2
   react: ^16.9.0
+  react-device-detect: ^1.9.10
   react-dom: ^16.9.0
   react-leaflet: ^2.4.0
   react-loading-overlay: ^1.0.1
