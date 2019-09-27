@@ -22,12 +22,39 @@ router.post("/city", (req, res) => {
     );
 });
 
-router.post("/findbysectors", (req, res) => {
-  const { city, sectors } = req.body;
+router.get("/sectors", (req, res) => {
+  db.get()
+    .collection(process.env.COLLECTION_NAME)
+    .distinct("sector")
+    .then(sectors => {
+      res.json(sectors);
+    });
+});
+
+router.post("/division", (req, res) => {
+  const { sector } = req.body;
+  console.log(sector);
 
   db.get()
     .collection(process.env.COLLECTION_NAME)
-    .find({ branche: { $in: sectors }, city: city })
+    .distinct("division", { sector: { $in: sector } })
+    .then(companies => {
+      res.status(200).json(companies);
+    })
+    .catch(err =>
+      res.status(400).json({
+        error: err,
+        message: "Sorry, something went wrong!s Please try again later."
+      })
+    );
+});
+
+router.post("/find-by-sector-and-division", (req, res) => {
+  const { city, sector, division } = req.body;
+
+  db.get()
+    .collection(process.env.COLLECTION_NAME)
+    .find({ sector: { $in: sector }, division: { $in: division }, city: city })
     .toArray()
     .then(companies => {
       res.status(200).json(companies);
@@ -40,13 +67,34 @@ router.post("/findbysectors", (req, res) => {
     );
 });
 
-router.get("/sectors", (req, res) => {
-  db.get()
-    .collection(process.env.COLLECTION_NAME)
-    .distinct("branche")
-    .then(sectors => {
-      res.json(sectors);
-    });
-});
+// router.get("/addfield", (req, res) => {
+//   db.get()
+//     .collection(process.env.COLLECTION_NAME)
+//     .updateMany({}, { $set: { sector: "Informatik" } }, false, true)
+//     .then(companies => {
+//       res.status(200).json({ message: "okay!" });
+//     })
+//     .catch(err =>
+//       res.status(400).json({
+//         error: err,
+//         message: "Sorry, something went wrong!s Please try again later."
+//       })
+//     );
+// });
+
+// router.get("/updatefield", (req, res) => {
+//   db.get()
+//     .collection(process.env.COLLECTION_NAME)
+//     .updateMany({}, { $rename: { branche: "division" } }, false, true)
+//     .then(companies => {
+//       res.status(200).json({ message: "okay!" });
+//     })
+//     .catch(err =>
+//       res.status(400).json({
+//         error: err,
+//         message: "Sorry, something went wrong!s Please try again later."
+//       })
+//     );
+// });
 
 module.exports = router;

@@ -14,8 +14,14 @@ import mapMarker from "./map-marker.svg";
 import userMarker from "./user-marker.svg";
 import searchBtnImage from "./search_btn.png";
 
-import { getCompanySectors, getAllDocumentsBySector, searchDistinctCityBy } from "./CompanyApi";
+import {
+  loadAvailableSectors,
+  getAllAvailableDivisionBySector,
+  findAllDocumentsBySectorAndDivision,
+  searchDistinctCityBy
+} from "./CompanyApi";
 import { getCityNameByLatitudeAndLongitude, getCoordinatesByCityName, getCoordinatesFromIpAdress } from "./CoordsApi";
+import { Logo } from "./ConsoleLogo";
 
 import "./App.css";
 
@@ -45,13 +51,15 @@ export default class App extends Component {
     this.getCurrentPositionError = this.getCurrentPositionError.bind(this);
     this.toggleInfoModal = this.toggleInfoModal.bind(this);
     this.sectorSubmit = this.sectorSubmit.bind(this);
-    this.selectMultipleOption = this.selectMultipleOption.bind(this);
+    this.selectSectorOption = this.selectSectorOption.bind(this);
     this.selectCityOption = this.selectCityOption.bind(this);
     this.asyncSearchCitys = this.asyncSearchCitys.bind(this);
     this.togglePageIsLoading = this.togglePageIsLoading.bind(this);
     this.toggleApiIsFetchcing = this.toggleApiIsFetching.bind(this);
     this.toggleShowSearchFormAndSearchBtn = this.toggleShowSearchFormAndSearchBtn.bind(this);
     this.handleSectorChange = this.handleSectorChange.bind(this);
+    this.handleDivisionChange = this.handleDivisionChange.bind(this);
+    this.selectDivisonOption = this.selectDivisonOption.bind(this);
   }
 
   state = {
@@ -71,20 +79,102 @@ export default class App extends Component {
     zoom: 2,
     sectorList: [],
     selectedSectorsArray: [],
+    divisionList: [],
+    selectedDivisionArray: [],
     companies: [],
     selectedCity: [],
-    citys: []
+    citys: [],
+    isSelectDivisonDisabled: true
   };
+
+  componentDidMount() {
+    console.log(Logo);
+
+    navigator.geolocation.getCurrentPosition(this.success, this.getCurrentPositionError, locationOptions);
+    this.loadAvailableSectorsAndResetDivisions();
+  }
+
+  success(location) {
+    getCityNameByLatitudeAndLongitude(location.coords).then(resolvedLocation => {
+      this.setUserLocation(resolvedLocation);
+      this.togglePageIsLoading();
+    });
+  }
+
+  getCurrentPositionError() {
+    getCoordinatesFromIpAdress().then(location => {
+      this.setUserLocation(location);
+      this.setState({
+        modal: true
+      });
+      this.togglePageIsLoading();
+    });
+  }
+
+  loadAvailableSectorsAndResetDivisions() {
+    loadAvailableSectors().then(sectors => {
+      this.setState({
+        sectorList: sectors,
+        divisionList: []
+      });
+    });
+  }
+
+  asyncSearchCitys(input) {
+    if (input.length > 2) {
+      searchDistinctCityBy(input).then(foundCitys => {
+        this.setState({
+          citys: foundCitys
+        });
+      });
+    }
+  }
+
+  selectSectorOption(selectedSectors) {
+    this.setState({ selectedSectorsArray: selectedSectors });
+    getAllAvailableDivisionBySector(selectedSectors).then(division => {
+      this.setState({
+        divisionList: division
+      });
+    });
+  }
+
+  selectDivisonOption(division) {
+    this.setState({ selectedDivisionArray: division });
+  }
+
+  handleSectorChange(event) {
+    const selectedSectors = this.getSelectedOptionsAsArray(event);
+    this.setState({ selectedSectorsArray: selectedSectors });
+    this.selectSectorOption(selectedSectors);
+  }
+
+  handleDivisionChange(event) {
+    const selectedDivisions = this.getSelectedOptionsAsArray(event);
+    this.setState({ selectedDivisionArray: selectedDivisions });
+  }
+
+  getSelectedOptionsAsArray(event) {
+    const options = event.target.options;
+    const selectedValues = [];
+    for (var i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        selectedValues.push(options[i].value);
+      }
+    }
+    return selectedValues;
+  }
 
   sectorSubmit() {
     this.toggleApiIsFetching();
 
     const query = {
       city: this.state.city,
-      sectors: this.state.selectedSectorsArray
+      sector: this.state.selectedSectorsArray,
+      division: this.state.selectedDivisionArray
     };
 
-    getAllDocumentsBySector(query).then(documents => {
+    findAllDocumentsBySectorAndDivision(query).then(documents => {
       this.setState({
         companies: documents
       });
@@ -105,6 +195,19 @@ export default class App extends Component {
     }));
   }
 
+  togglePageIsLoading() {
+    this.setState(prevState => ({
+      pageIsLoading: !prevState.pageIsLoading
+    }));
+  }
+
+  toggleShowSearchFormAndSearchBtn() {
+    this.setState(prevState => ({
+      showSearchForm: !prevState.showSearchForm,
+      showSearchBtn: !prevState.showSearchBtn
+    }));
+  }
+
   setUserLocation(location) {
     this.setState({
       location: {
@@ -117,43 +220,6 @@ export default class App extends Component {
       zoom: 14
     });
   }
-
-  togglePageIsLoading() {
-    this.setState(prevState => ({
-      pageIsLoading: !prevState.pageIsLoading
-    }));
-  }
-
-  success(location) {
-    getCityNameByLatitudeAndLongitude(location.coords).then(resolvedLocation => {
-      this.setUserLocation(resolvedLocation);
-      this.togglePageIsLoading();
-    });
-  }
-
-  getCurrentPositionError() {
-    getCoordinatesFromIpAdress().then(location => {
-      this.setUserLocation(location);
-      this.setState({
-        modal: true
-      });
-      this.togglePageIsLoading();
-    });
-  }
-  componentDidMount() {
-    navigator.geolocation.getCurrentPosition(this.success, this.getCurrentPositionError, locationOptions);
-
-    getCompanySectors().then(sectors => {
-      this.setState({
-        sectorList: sectors
-      });
-    });
-  }
-
-  selectMultipleOption(value) {
-    this.setState({ selectedSectorsArray: value });
-  }
-
   selectCityOption(value) {
     this.setState({ selectedCity: value });
     this.togglePageIsLoading();
@@ -166,34 +232,6 @@ export default class App extends Component {
       .then(() => {
         this.togglePageIsLoading();
       });
-  }
-
-  asyncSearchCitys(input) {
-    if (input.length >= 2) {
-      searchDistinctCityBy(input).then(foundCitys => {
-        this.setState({
-          citys: foundCitys
-        });
-      });
-    }
-  }
-
-  toggleShowSearchFormAndSearchBtn() {
-    this.setState(prevState => ({
-      showSearchForm: !prevState.showSearchForm,
-      showSearchBtn: !prevState.showSearchBtn
-    }));
-  }
-
-  handleSectorChange(event) {
-    const options = event.target.options;
-    const selectedArray = [];
-    for (var i = 0, l = options.length; i < l; i++) {
-      if (options[i].selected) {
-        selectedArray.push(options[i].value);
-      }
-    }
-    this.setState({ selectedSectorsArray: selectedArray });
   }
 
   render() {
@@ -210,14 +248,17 @@ export default class App extends Component {
       pageIsLoading,
       apiFetching,
       selectedCity,
-      citys
+      citys,
+      divisionList,
+      selectedDivisionArray
     } = this.state;
 
     const position = [this.state.location.latitude, this.state.location.longitude];
-    const readyToQuery = selectedSectorsArray.length > 0;
+    const sectorIsSelected = selectedSectorsArray.length > 0;
+    const divisonIsSelected = selectedDivisionArray.length > 0;
 
     return (
-      <div>
+      <div className="container-app">
         <LoadingOverlay className="map-container" active={pageIsLoading} spinner text="Einen Augenblick bitte . . . ">
           <Map className="map" center={position} zoom={zoom}>
             <TileLayer
@@ -253,9 +294,10 @@ export default class App extends Component {
                   <div>
                     <CardHeader>Auswahl der Firmenbranche</CardHeader>
                     <CardBody>
-                      <CardText>Suche nach einer anderen Stadt.</CardText>
+                      <CardText>Schau dich in {selectedCity} um oder suche nach einer anderen Stadt.</CardText>
                       <Picky
                         id="picky-city"
+                        className="picky-selector"
                         value={selectedCity}
                         options={citys}
                         multiple={false}
@@ -265,34 +307,70 @@ export default class App extends Component {
                         allSelectedPlaceholder={"Alle ausgewählt"}
                         filterPlaceholder={"z.B.: Berlin"}
                       />
-                      <CardText>Bitte wähle deine gesuchte Branche aus.</CardText>
+                      <CardText>Gesuchte Branche:</CardText>
                       {isMobile ? (
-                        <select multiple onChange={this.handleSectorChange} value={selectedSectorsArray}>
-                          {sectorList.map((sector, i) => (
-                            <option key={i} value={sector}>
-                              {sector}
-                            </option>
-                          ))}
-                        </select>
+                        <div>
+                          <select multiple onChange={this.handleSectorChange} value={selectedSectorsArray}>
+                            {sectorList.map((sector, i) => (
+                              <option key={i} value={sector}>
+                                {sector}
+                              </option>
+                            ))}
+                          </select>
+                          <CardText>Gesuchter Fachbereich:</CardText>
+                          <select multiple onChange={this.handleDivisionChange} value={selectedDivisionArray} disabled={!sectorIsSelected}>
+                            {divisionList.map((sector, i) => (
+                              <option key={i} value={sector}>
+                                {sector}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
                       ) : (
-                        <Picky
-                          id="picky-sector"
-                          value={selectedSectorsArray}
-                          options={sectorList}
-                          multiple={true}
-                          includeSelectAll={true}
-                          includeFilter={true}
-                          onChange={this.selectMultipleOption}
-                          placeholder="Branche"
-                          selectAllText="Alle auswählen"
-                          numberDisplayed={0}
-                          manySelectedPlaceholder={"%s ausgewählt"}
-                          allSelectedPlaceholder={"Alle ausgewählt"}
-                        />
+                        <div>
+                          <Picky
+                            id="picky-sector"
+                            className="picky-selector"
+                            value={selectedSectorsArray}
+                            options={sectorList}
+                            multiple={true}
+                            includeSelectAll={true}
+                            includeFilter={true}
+                            onChange={this.selectSectorOption}
+                            placeholder="Branche"
+                            selectAllText="Alle auswählen"
+                            numberDisplayed={0}
+                            manySelectedPlaceholder={"%s ausgewählt"}
+                            allSelectedPlaceholder={"Alle ausgewählt"}
+                          />
+                          <CardText>Gesuchter Fachbereich:</CardText>
+                          <Picky
+                            id="picky-divison"
+                            className="picky-selector"
+                            value={selectedDivisionArray}
+                            options={divisionList}
+                            multiple={true}
+                            includeSelectAll={true}
+                            includeFilter={true}
+                            onChange={this.selectDivisonOption}
+                            placeholder="Branche"
+                            selectAllText="Alle auswählen"
+                            numberDisplayed={0}
+                            manySelectedPlaceholder={"%s ausgewählt"}
+                            allSelectedPlaceholder={"Alle ausgewählt"}
+                          />
+                        </div>
                       )}
-                      <Button className="btn-form" onClick={this.sectorSubmit} disabled={!readyToQuery}>
+                      <Button className="btn-form" onClick={this.sectorSubmit} disabled={!divisonIsSelected || !sectorIsSelected}>
                         Suchen
                       </Button>
+                      {isMobile ? (
+                        <Button className="btn-form" onClick={this.toggleShowSearchFormAndSearchBtn}>
+                          Abbrechen
+                        </Button>
+                      ) : (
+                        ""
+                      )}
                     </CardBody>
                   </div>
                 ) : (

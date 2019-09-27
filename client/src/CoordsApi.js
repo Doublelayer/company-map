@@ -1,6 +1,6 @@
 const API_URL_IP_TO_COORDINATES = "https://ipapi.co/json/";
 
-export function getCityNameByLatitudeAndLongitude(coords) {
+function getCityNameByLatitudeAndLongitude(coords) {
   return fetch(`https://www.geocode.xyz/${coords.latitude},${coords.longitude}?json=1`)
     .then(res => res.json())
     .then(result => {
@@ -13,7 +13,7 @@ export function getCityNameByLatitudeAndLongitude(coords) {
     .catch(error => console.warn(`ERROR(${error.code}) : ${error.message}`));
 }
 
-export function getCoordinatesByCityName(cityName) {
+function getCoordinatesByCityName(cityName) {
   return fetch(`https://www.geocode.xyz/${cityName}+de?json=1`)
     .then(res => res.json())
     .then(coords => {
@@ -26,7 +26,7 @@ export function getCoordinatesByCityName(cityName) {
     .catch(error => console.warn(`ERROR(${error.code}) : ${error.message}`));
 }
 
-export function getCoordinatesFromIpAdress() {
+function getCoordinatesFromIpAdress() {
   return fetch(API_URL_IP_TO_COORDINATES)
     .then(res => res.json())
     .then(location => {
@@ -34,3 +34,9 @@ export function getCoordinatesFromIpAdress() {
     })
     .catch(error => console.warn(`ERROR(${error.code}) : ${error.message}`));
 }
+
+module.exports = {
+  getCityNameByLatitudeAndLongitude,
+  getCoordinatesByCityName,
+  getCoordinatesFromIpAdress
+};

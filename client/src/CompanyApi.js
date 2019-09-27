@@ -1,7 +1,7 @@
 const API_URL_COMPANIES =
   window.location.hostname === "localhost" ? "http://localhost:5000/api/v1/" : "https://company-map-api.doublelayer.now.sh/api/v1/";
 
-export function getCompanySectors() {
+export function loadAvailableSectors() {
   return fetch(`${API_URL_COMPANIES}companies/sectors`)
     .then(res => res.json())
     .then(sectors => {
@@ -10,8 +10,24 @@ export function getCompanySectors() {
     .catch(error => console.warn(`ERROR(${error.code}) : ${error.message}`));
 }
 
-export function getAllDocumentsBySector(query) {
-  return fetch(`${API_URL_COMPANIES}companies/findbysectors`, {
+export function getAllAvailableDivisionBySector(sector) {
+  return fetch(`${API_URL_COMPANIES}companies/division`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ sector: sector })
+  })
+    .then(res => res.json())
+    .then(foundSectors => {
+      return foundSectors;
+    })
+    .catch(error => console.warn(`ERROR(${error.code}) : ${error.message}`));
+}
+
+export function findAllDocumentsBySectorAndDivision(query) {
+  return fetch(`${API_URL_COMPANIES}companies/find-by-sector-and-division`, {
     method: "POST",
     headers: {
       Accept: "application/json",
