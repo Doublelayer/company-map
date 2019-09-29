@@ -1,17 +1,17 @@
-# Germna Company Map
+# German Company Map
 
 - App detects users location (from browser or IP)
 - A pin will be added to the map with the users location
 - Guests of the website can search for companies based on city, sector and division input
-- A pin will for all found companies will be added to the map
-- Pin is clickable an refers to the company wepage
+- A pin for all found companies will be added to the map
+- Pin is clickable an refers to the company webpage
 - Includes two servers (client & api)
 
 ![example](company-map.png)
 
-## Client
+## Client :busts_in_silhouette:
 
-- [written in react with](https://reactjs.org/)
+- [written in react](https://reactjs.org/)
 - [reactrap](https://reactstrap.github.io/) & [bootstrap](https://react-bootstrap.github.io/)
 - [leaflet](https://leafletjs.com/)
   - Leaflet is the leading open-source JavaScript library for mobile-friendly interactive maps.
@@ -19,8 +19,6 @@
 - [react-loading-overlay](https://www.npmjs.com/package/react-loading-overlay)
 - [react-picky](https://www.npmjs.com/package/react-picky)
 - [react-spinners](https://www.npmjs.com/package/react-spinners)
-
-:arrow_forward: for more details go to client folder
 
 ## Setup
 
@@ -34,7 +32,9 @@ npm install
 npm start
 ```
 
-## Server
+---
+
+## Server :computer:
 
 Includes API Server utilities:
 
