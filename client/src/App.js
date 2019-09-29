@@ -76,7 +76,11 @@ export default class App extends Component {
   componentDidMount() {
     console.log(Logo);
 
-    navigator.geolocation.getCurrentPosition(this.success, this.getCurrentPositionError, locationOptions);
+    if (!isMobile) {
+      navigator.geolocation.getCurrentPosition(this.success, this.getCurrentPositionError, locationOptions);
+    } else {
+      this.getCurrentPositionError();
+    }
     this.loadAvailableSectorsAndResetDivisions();
   }
 
