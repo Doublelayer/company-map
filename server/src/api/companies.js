@@ -33,7 +33,6 @@ router.get("/sectors", (req, res) => {
 
 router.post("/division", (req, res) => {
   const { sector } = req.body;
-  console.log(sector);
 
   db.get()
     .collection(process.env.COLLECTION_NAME)
@@ -66,50 +65,5 @@ router.post("/find-by-sector-and-division", (req, res) => {
       })
     );
 });
-
-// router.get("/addfield", (req, res) => {
-//   db.get()
-//     .collection(process.env.COLLECTION_NAME)
-//     .updateMany({}, { $set: { sector: "Informatik" } }, false, true)
-//     .then(companies => {
-//       res.status(200).json({ message: "okay!" });
-//     })
-//     .catch(err =>
-//       res.status(400).json({
-//         error: err,
-//         message: "Sorry, something went wrong!s Please try again later."
-//       })
-//     );
-// });
-
-// router.get("/updatefield", (req, res) => {
-//   db.get()
-//     .collection(process.env.COLLECTION_NAME)
-//     .updateMany({}, { $rename: { branche: "division" } }, false, true)
-//     .then(companies => {
-//       res.status(200).json({ message: "okay!" });
-//     })
-//     .catch(err =>
-//       res.status(400).json({
-//         error: err,
-//         message: "Sorry, something went wrong!s Please try again later."
-//       })
-//     );
-// });
-
-// router.get("/remove", (req, res) => {
-//   db.get()
-//     .collection(process.env.COLLECTION_NAME)
-//     .remove({ imported: null, sector: "Industrie und Maschinenbau" })
-//     .then(() => {
-//       res.status(200).json({ message: "okay!" });
-//     })
-//     .catch(err =>
-//       res.status(400).json({
-//         error: err,
-//         message: "Sorry, something went wrong!s Please try again later."
-//       })
-//     );
-// });
 
 module.exports = router;
