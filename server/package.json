@@ -1,7 +1,7 @@
 {
   "name": "company-map-api",
   "version": "1.0.0",
-  "description": "REST API for find Companies by sectors",
+  "description": "REST API to find german Companies by city, sector and divison",
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
