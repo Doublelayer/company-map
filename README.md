@@ -62,6 +62,10 @@ Development utilities:
 - [mongodb](https://www.npmjs.com/package/mongodb)
   - The official MongoDB driver for Node.js. Provides a high-level API on top of mongodb-core that is meant for end users.
 
+## Databse Connection
+
+- add new .env file and add credentials (look at .env.sample)
+
 ## Setup
 
 ```
