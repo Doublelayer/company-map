@@ -97,4 +97,19 @@ router.post("/find-by-sector-and-division", (req, res) => {
 //     );
 // });
 
+// router.get("/remove", (req, res) => {
+//   db.get()
+//     .collection(process.env.COLLECTION_NAME)
+//     .remove({ imported: null, sector: "Industrie und Maschinenbau" })
+//     .then(() => {
+//       res.status(200).json({ message: "okay!" });
+//     })
+//     .catch(err =>
+//       res.status(400).json({
+//         error: err,
+//         message: "Sorry, something went wrong!s Please try again later."
+//       })
+//     );
+// });
+
 module.exports = router;

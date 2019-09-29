@@ -3,16 +3,14 @@ import { isMobile } from "react-device-detect";
 
 import "react-picky/dist/picky.css";
 
-import L from "leaflet";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import BeatLoader from "react-spinners/BeatLoader";
 import Picky from "react-picky";
 import LoadingOverlay from "react-loading-overlay";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Card, CardHeader, CardBody, CardText } from "reactstrap";
 
-import mapMarker from "./map-marker.svg";
-import userMarker from "./user-marker.svg";
 import searchBtnImage from "./search_btn.png";
+import { markerConfig } from "./MapMarkerConfig";
 
 import {
   loadAvailableSectors,
@@ -24,18 +22,6 @@ import { getCityNameByLatitudeAndLongitude, getCoordinatesByCityName, getCoordin
 import { Logo } from "./ConsoleLogo";
 
 import "./App.css";
-
-const marker = L.icon({
-  iconUrl: mapMarker,
-  iconSize: [50, 82],
-  popupAnchor: [0, -20]
-});
-
-const user = L.icon({
-  iconUrl: userMarker,
-  iconSize: [50, 82],
-  popupAnchor: [0, -20]
-});
 
 const locationOptions = {
   enableHighAccuracy: true,
@@ -122,6 +108,8 @@ export default class App extends Component {
 
   asyncSearchCitys(input) {
     if (input.length > 2) {
+      console.log("search...");
+
       searchDistinctCityBy(input).then(foundCitys => {
         this.setState({
           citys: foundCitys
@@ -265,15 +253,23 @@ export default class App extends Component {
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {haveUserLoacation ? <Marker position={position} icon={user}></Marker> : ""}
+            {haveUserLoacation ? <Marker position={position} icon={markerConfig.User}></Marker> : ""}
             {companies.map(companies => (
-              <Marker key={companies._id} position={[companies.latitude, companies.longitude]} icon={marker}>
+              <Marker
+                key={companies._id}
+                position={[companies.latitude, companies.longitude]}
+                icon={markerConfig[companies.sector.replace(/\s/g, "_")]}
+              >
                 <Popup>
                   <a href={companies.homepage} target="_blank" rel="noopener noreferrer">
                     {companies.name}
                   </a>
                   <br />
+                  Branche: {companies.sector}
+                  <br />
                   {companies.street} {companies.housenumber}
+                  <br />
+                  Gegründet: {companies.founding_date}
                 </Popup>
               </Marker>
             ))}
