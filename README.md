@@ -6,6 +6,8 @@
 - A pin for all found companies will be added to the map
 - Pin is clickable an refers to the company webpage
 - Includes two servers (client & api)
+- deployed with [zeit.co](https://zeit.co/)
+- :point_right: [Live example](https://company-map-client.doublelayer.now.sh) :point_left:
 
 ![example](company-map.png)
 
