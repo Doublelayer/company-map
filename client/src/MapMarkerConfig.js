@@ -15,5 +15,10 @@ export const markerConfig = {
     iconUrl: require("./markers/red.svg"),
     iconSize: [50, 82],
     popupAnchor: [0, -20]
+  }),
+  Automobil_und_Fahrzeugbau: L.icon({
+    iconUrl: require("./markers/green.svg"),
+    iconSize: [50, 82],
+    popupAnchor: [0, -20]
   })
 };
