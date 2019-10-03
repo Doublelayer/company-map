@@ -11,6 +11,7 @@ dependencies:
   react-scripts: 3.1.2
   react-spinners: 0.6.1_react-dom@16.9.0+react@16.9.0
   reactstrap: 8.0.1_react-dom@16.9.0+react@16.9.0
+  throttle-debounce: 2.1.0
 lockfileVersion: 5.1
 packages:
   /@babel/code-frame/7.5.5:
@@ -9811,6 +9812,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-iQN8vJLFarGJJua6TLsgDhVnKmo=
+  /throttle-debounce/2.1.0:
+    dev: false
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-AOvyNahXQuU7NN+VVvOOX+uW6FPaWdAOdRP5HfwYxAfCzXTFKRMoIMk+n+po318+ktcChx+F1Dd91G3YHeMKyg==
   /through/2.3.8:
     dev: false
     resolution:
@@ -10734,3 +10741,4 @@ specifiers:
   react-scripts: 3.1.2
   react-spinners: ^0.6.1
   reactstrap: ^8.0.1
+  throttle-debounce: ^2.1.0

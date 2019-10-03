@@ -3,6 +3,7 @@ import { isMobile } from "react-device-detect";
 
 import "react-picky/dist/picky.css";
 
+import { throttle } from "throttle-debounce";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import BeatLoader from "react-spinners/BeatLoader";
 import Picky from "react-picky";
@@ -32,6 +33,7 @@ const locationOptions = {
 export default class App extends Component {
   constructor(props) {
     super(props);
+    this.autocompleteSearchThrottled = throttle(500, this.autocompleteSearch);
     this.setUserLocation = this.setUserLocation.bind(this);
     this.success = this.success.bind(this);
     this.getCurrentPositionError = this.getCurrentPositionError.bind(this);
@@ -110,15 +112,18 @@ export default class App extends Component {
     });
   }
 
-  asyncSearchCitys(input) {
-    if (input.length > 2) {
-      console.log("search...");
-
-      searchDistinctCityBy(input).then(foundCitys => {
-        this.setState({
-          citys: foundCitys
-        });
+  autocompleteSearch = q => {
+    searchDistinctCityBy(q).then(foundCitys => {
+      this.setState({
+        citys: foundCitys
       });
+    });
+  };
+
+  asyncSearchCitys(input) {
+    console.log(input.length);
+    if (input.length !== 0) {
+      this.autocompleteSearchThrottled(input);
     }
   }
 
