@@ -3,6 +3,9 @@ import { isMobile } from "react-device-detect";
 
 import "react-picky/dist/picky.css";
 
+import CompanyMap from "./parcels/map/companyMap";
+import InfoModal from "./parcels/infoModal/infoModal";
+
 import { throttle } from "throttle-debounce";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import BeatLoader from "react-spinners/BeatLoader";
@@ -11,7 +14,11 @@ import LoadingOverlay from "react-loading-overlay";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Card, CardHeader, CardBody, CardText } from "reactstrap";
 
 import searchBtnImage from "./search_btn.png";
-import { markerConfig } from "./MapMarkerConfig";
+
+import { useSelector, connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { toggleInfoModal } from "./actions/index";
+import { writeToConsol } from "./actions/testAction";
 
 import {
   loadAvailableSectors,
@@ -30,9 +37,10 @@ const locationOptions = {
   maximumAge: 0
 };
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
+
     this.autocompleteSearchThrottled = throttle(500, this.autocompleteSearch);
     this.setUserLocation = this.setUserLocation.bind(this);
     this.success = this.success.bind(this);
@@ -78,12 +86,15 @@ export default class App extends Component {
   componentDidMount() {
     console.log(Logo);
 
-    if (!isMobile) {
-      navigator.geolocation.getCurrentPosition(this.success, this.getCurrentPositionError, locationOptions);
-    } else {
-      this.getCurrentPositionError();
-    }
-    this.loadAvailableSectorsAndResetDivisions();
+    this.props.dispatch(writeToConsol("hello world!"));
+    this.props.dispatch(writeToConsol("hello Florin!"));
+
+    // if (!isMobile) {
+    //   navigator.geolocation.getCurrentPosition(this.success, this.getCurrentPositionError, locationOptions);
+    // } else {
+    //   this.getCurrentPositionError();
+    // }
+    // this.loadAvailableSectorsAndResetDivisions();
   }
 
   success(location) {
@@ -96,9 +107,7 @@ export default class App extends Component {
   getCurrentPositionError() {
     getCoordinatesFromIpAdress().then(location => {
       this.setUserLocation(location);
-      this.setState({
-        modal: true
-      });
+      this.props.dispatch(toggleInfoModal());
       this.togglePageIsLoading();
     });
   }
@@ -256,42 +265,9 @@ export default class App extends Component {
 
     return (
       <div className="container-app">
-        <LoadingOverlay className="map-container" active={pageIsLoading} spinner text="Einen Augenblick bitte . . . ">
-          <Map className="map" center={position} zoom={zoom}>
-            <TileLayer
-              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            {haveUserLoacation ? <Marker position={position} icon={markerConfig.User}></Marker> : ""}
-            {companies.map(companies => (
-              <Marker
-                key={companies._id}
-                position={[companies.latitude, companies.longitude]}
-                icon={markerConfig[companies.sector.replace(/\s/g, "_")]}
-              >
-                <Popup>
-                  <a href={companies.homepage} target="_blank" rel="noopener noreferrer">
-                    {companies.name}
-                  </a>
-                  <br />
-                  Branche: {companies.sector}
-                  <br />
-                  {companies.street} {companies.housenumber}
-                  <br />
-                  Gegründet: {companies.founding_date}
-                </Popup>
-              </Marker>
-            ))}
-          </Map>
-          <Modal isOpen={modal}>
-            <ModalHeader>Hinweis zur Standortermittlung</ModalHeader>
-            <ModalBody>Du hast die Standortermittlung nicht erlaubt. Dein Standort wurde anhand deiner IP-Adresse ermittelt!</ModalBody>
-            <ModalFooter>
-              <Button color="primary" onClick={this.toggleInfoModal}>
-                Okay
-              </Button>
-            </ModalFooter>
-          </Modal>
+        <LoadingOverlay active={pageIsLoading} spinner text="Einen Augenblick bitte . . . ">
+          <CompanyMap position={position} zoom={zoom} haveUserLoacation={haveUserLoacation} markerData={companies} />
+          <InfoModal />
           {!pageIsLoading && showSearchForm ? (
             <div>
               <Card body className="search-form">
@@ -412,3 +388,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default connect()(App);

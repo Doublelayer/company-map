@@ -1,0 +1,9 @@
+.map-container {
+  max-height: -webkit-fill-available;
+  height: 100vh;
+}
+
+.map {
+  min-height: -webkit-fill-available;
+  z-index: 0;
+}

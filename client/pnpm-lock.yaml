@@ -8,9 +8,11 @@ dependencies:
   react-leaflet: 2.4.0_c98554fc27dcc3f6c1e35b7c868e405a
   react-loading-overlay: 1.0.1_react-dom@16.9.0+react@16.9.0
   react-picky: 4.5.2_1d862d7c3575cb6e28b49834d246a21d
+  react-redux: 7.1.1_react@16.9.0+redux@4.0.4
   react-scripts: 3.1.2
   react-spinners: 0.6.1_react-dom@16.9.0+react@16.9.0
   reactstrap: 8.0.1_react-dom@16.9.0+react@16.9.0
+  redux: 4.0.4
   throttle-debounce: 2.1.0
 lockfileVersion: 5.1
 packages:
@@ -4751,7 +4753,7 @@ packages:
       integrity: sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==
   /hoist-non-react-statics/3.3.0:
     dependencies:
-      react-is: 16.9.0
+      react-is: 16.10.2
     dev: false
     resolution:
       integrity: sha512-0XsbTXxgiaCDYDIWFcwkmerZPSwywfUqYmwT4jzewKTQSWoE6FCMoUVOeBJWK3E/CrWbxRG3m5GzY4lnIwGRBA==
@@ -8404,6 +8406,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-DHRuRk3K4Lg9obI6J4Y+nKvtwjasYRU9CFL3ud42x9YJG1HbQjSNublapC/WBJOA726gNUbqbj0U2df9+uzspQ==
+  /react-is/16.10.2:
+    dev: false
+    resolution:
+      integrity: sha512-INBT1QEgtcCCgvccr5/86CfD71fw9EPmDxgiJX4I2Ddr6ZsV6iFXsuby+qWJPtmNuMY0zByTsG4468P7nHuNWA==
   /react-is/16.9.0:
     dev: false
     resolution:
@@ -8468,6 +8474,22 @@ packages:
       react: 0.14.x || ^15.0.0 || ^16.0.0
     resolution:
       integrity: sha512-9AcQB29V+WrBKk6X7p0eojd1f25/oJajVdMZkywIoAV6Ag7hzE1Mhyeup2Q1QnvFRtGQFQvtqfhlEoDAPfKAVA==
+  /react-redux/7.1.1_react@16.9.0+redux@4.0.4:
+    dependencies:
+      '@babel/runtime': 7.6.2
+      hoist-non-react-statics: 3.3.0
+      invariant: 2.2.4
+      loose-envify: 1.4.0
+      prop-types: 15.7.2
+      react: 16.9.0
+      react-is: 16.10.2
+      redux: 4.0.4
+    dev: false
+    peerDependencies:
+      react: ^16.8.3
+      redux: ^2.0.0 || ^3.0.0 || ^4.0.0-0
+    resolution:
+      integrity: sha512-QsW0vcmVVdNQzEkrgzh2W3Ksvr8cqpAv5FhEk7tNEft+5pp7rXxAudTz3VOPawRkLIepItpkEIyLcN/VVXzjTg==
   /react-scripts/3.1.2:
     dependencies:
       '@babel/core': 7.6.0
@@ -8685,6 +8707,13 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-nRCcW9Sj7NuZwa2XvH9co8NPeXUBhZP7CRKJtU+cS6PW9FpCIFoI5ib0NT1ZrbNuPoRy0ylyCaUL8Gih4LSyFg==
+  /redux/4.0.4:
+    dependencies:
+      loose-envify: 1.4.0
+      symbol-observable: 1.2.0
+    dev: false
+    resolution:
+      integrity: sha512-vKv4WdiJxOWKxK0yRoaK3Y4pxxB0ilzVx6dszU2W8wLxlb2yikRph4iV/ymtdJ6ZxpBLFbyrxklnT5yBbQSl3Q==
   /regenerate-unicode-properties/8.1.0:
     dependencies:
       regenerate: 1.4.0
@@ -10738,7 +10767,9 @@ specifiers:
   react-leaflet: ^2.4.0
   react-loading-overlay: ^1.0.1
   react-picky: ^4.5.2
+  react-redux: ^7.1.1
   react-scripts: 3.1.2
   react-spinners: ^0.6.1
   reactstrap: ^8.0.1
+  redux: ^4.0.4
   throttle-debounce: ^2.1.0
