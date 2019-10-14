@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleInfoModal } from "../../actions/index";
+import { toggleInfoModal } from "../../../store/actions/index";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 export default function InfoModal() {

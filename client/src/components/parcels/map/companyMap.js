@@ -1,23 +1,22 @@
 import React, { Component } from "react";
-import "./companyMap.css";
+import { connect } from "react-redux";
 import { markerConfig } from "./MapMarkerConfig";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 
-export default class CompanyMap extends Component {
-  constructor(props) {
-    super(props);
-  }
+import "./companyMap.css";
+
+class CompanyMap extends Component {
   render() {
-    const { position, zoom, haveUserLoacation, markerData } = this.props;
+    const { userPosition, zoom, haveUserLoacation, markerData } = this.props;
 
     return (
       <div className="map-container">
-        <Map className="map" center={position} zoom={zoom}>
+        <Map className="map" center={userPosition} zoom={zoom}>
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {haveUserLoacation ? <Marker position={position} icon={markerConfig.User}></Marker> : ""}
+          {haveUserLoacation ? <Marker position={userPosition} icon={markerConfig.User}></Marker> : ""}
 
           {markerData.map(data => (
             <Marker key={data._id} position={[data.latitude, data.longitude]} icon={markerConfig[data.sector.replace(/\s/g, "_")]}>
@@ -39,3 +38,11 @@ export default class CompanyMap extends Component {
     );
   }
 }
+const mapStateToProps = state => ({
+  haveUserLoacation: state.appDataReducer.userPosition.haveUserLoacation,
+  userPosition: [state.appDataReducer.userPosition.latitude, state.appDataReducer.userPosition.longitude],
+  zoom: state.locationReducer.zoom,
+  markerData: state.appDataReducer.markerData || []
+});
+
+export default connect(mapStateToProps)(CompanyMap);

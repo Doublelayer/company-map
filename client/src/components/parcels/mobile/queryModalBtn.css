@@ -1,0 +1,11 @@
+.search-mobile-button {
+  position: fixed;
+  bottom: 55px;
+  right: 35px;
+  max-width: 50px;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+}
