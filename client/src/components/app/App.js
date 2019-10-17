@@ -12,7 +12,7 @@ import { setPageLoading } from "../../store/actions/loading";
 
 import { findUserPosition } from "../../utils/userPositionProvider";
 
-import { Logo } from "../../ConsoleLogo";
+import { Logo } from "../../utils/ConsoleLogo";
 
 import "./App.css";
 
@@ -33,10 +33,14 @@ class App extends React.Component {
       <div className="container-app">
         <LoadingOverlay active={pageIsLoading} spinner text="Einen Augenblick bitte . . . ">
           <CompanyMap />
-          <InfoModal />
-          {pageIsLoading || minimized ? <QueryModal /> : null}
-          <Footer />
-          {!minimized ? <QueryModalBtn /> : null}
+          {pageIsLoading ? null : (
+            <div>
+              <InfoModal />
+              {pageIsLoading || minimized ? <QueryModal /> : null}
+              <Footer />
+              {!minimized ? <QueryModalBtn /> : null}
+            </div>
+          )}
         </LoadingOverlay>
       </div>
     );

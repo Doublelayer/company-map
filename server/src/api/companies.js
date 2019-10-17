@@ -31,6 +31,16 @@ router.get("/sectors", (req, res) => {
     });
 });
 
+router.get("/grouped", (req, res) => {
+  db.get()
+    .collection(process.env.COLLECTION_NAME)
+    .aggregate([{ $group: { _id: "$sector", division: { $addToSet: "$division" } } }])
+    .toArray()
+    .then(sectors => {
+      res.json(sectors);
+    });
+});
+
 router.post("/division", (req, res) => {
   const { sector } = req.body;
 

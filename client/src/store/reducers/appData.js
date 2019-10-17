@@ -6,8 +6,7 @@ const initialState = {
     latitude: "",
     longitude: "",
     city: ""
-  },
-  selectedSectors: ""
+  }
 };
 
 const appDataReducer = (state = initialState, action) => {

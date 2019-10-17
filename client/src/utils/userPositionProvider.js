@@ -8,52 +8,77 @@ export function findUserPosition() {
     try {
       const { coords } = await getCurrentPosition();
       const { latitude, longitude } = coords;
+      const city = await getCityNameFromLatLon(latitude, longitude);
+      const position = getUserPositionObject(latitude, longitude, city);
 
-      return fetch(`https://www.geocode.xyz/${latitude},${longitude}?json=1`)
-        .then(res => res.json())
-        .then(res => {
-          if (res.error) {
-            throw res.error;
-          }
-
-          const position = {
-            tag: "userPosition",
-            data: {
-              haveUserLoacation: true,
-              latitude: res.latt,
-              longitude: res.longt,
-              city: res.city
-            }
-          };
-
-          dispatch(storeAppData(position));
-          dispatch(fetchSuccess());
-        })
-        .catch(error => {
-          dispatch(fetchError(error));
-        });
+      dispatch(storeAppData(position));
     } catch (error) {
-      return fetch("http://ip-api.com/json/?lang=de")
-        .then(res => res.json())
-        .then(res => {
-          const position = {
-            tag: "userPosition",
-            data: {
-              haveUserLoacation: true,
-              latitude: res.lat,
-              longitude: res.lon,
-              city: res.city
-            }
-          };
-          dispatch(storeAppData(position));
-          dispatch(toggleInfoModal());
-          dispatch(fetchSuccess());
-        })
-        .catch(error => {
-          dispatch(fetchError(error));
-        });
+      const res = await getCoordinatesAndCityFromIP();
+
+      const position = res && getUserPositionObject(res.latitude, res.longitude, res.city);
+
+      dispatch(storeAppData(position));
+      dispatch(toggleInfoModal());
+    }
+    dispatch(fetchSuccess());
+  };
+}
+
+function getUserPositionObject(latitude, longitude, city) {
+  return {
+    tag: "userPosition",
+    data: {
+      haveUserLoacation: true,
+      latitude: latitude,
+      longitude: longitude,
+      city: city
     }
   };
+}
+
+export function setNewUserPositonBy(cityName) {
+  return async dispatch => {
+    dispatch(fetchPendinng());
+    return fetch(`https://www.geocode.xyz/${cityName}?region=DE&json=1`)
+      .then(res => res.json())
+      .then(coords => {
+        const position = getUserPositionObject(coords.latt, coords.longt, cityName);
+
+        dispatch(storeAppData(position));
+        dispatch(fetchSuccess());
+      })
+      .catch(error => dispatch(fetchError(error)));
+  };
+}
+
+function getCoordinatesAndCityFromIP() {
+  return fetch("http://ip-api.com/json/?lang=de")
+    .then(res => res.json())
+    .then(res => {
+      return {
+        latitude: res.lat,
+        longitude: res.lon,
+        city: res.city
+      };
+    })
+    .catch(() => {
+      return null;
+    });
+}
+
+function getCityNameFromLatLon(latitude, longitude) {
+  // dispatch(fetchPendinng());
+  return fetch(`https://www.geocode.xyz/${latitude},${longitude}?json=1`)
+    .then(res => res.json())
+    .then(res => {
+      if (res.error) {
+        throw res.error;
+      }
+      return res.city;
+    })
+    .catch(error => {
+      return null;
+    });
 }
 
 const locationOptions = {

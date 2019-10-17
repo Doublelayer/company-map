@@ -11,10 +11,10 @@ dependencies:
   react-picky: 4.5.2_1d862d7c3575cb6e28b49834d246a21d
   react-redux: 7.1.1_react@16.9.0+redux@4.0.4
   react-scripts: 3.1.2
-  react-sidebar: 3.0.2_react-dom@16.9.0+react@16.9.0
   react-spinners: 0.6.1_react-dom@16.9.0+react@16.9.0
   reactstrap: 8.0.1_react-dom@16.9.0+react@16.9.0
   redux: 4.0.4
+  redux-thunk: 2.3.0
   throttle-debounce: 2.1.0
 lockfileVersion: 5.1
 packages:
@@ -887,12 +887,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-EXxN64agfUqqIGeEjI5dL5z0Sw0ZwWo1mLTi4mQowCZ42O59b7DRpZAnTC6OqdF28wMBMFKNb/4uFGrVaigSpg==
-  /@babel/runtime/7.6.3:
-    dependencies:
-      regenerator-runtime: 0.13.3
-    dev: false
-    resolution:
-      integrity: sha512-kq6anf9JGjW8Nt5rYfEuGRaEAaH1mkv3Bbu6rYvLOpPh/RusSJXuKPEAoZ7L7gybZkchE8+NV5g9vKF4AGAtsA==
   /@babel/template/7.6.0:
     dependencies:
       '@babel/code-frame': 7.5.5
@@ -8569,18 +8563,6 @@ packages:
       fsevents: 2.0.7
     resolution:
       integrity: sha512-aN9E1jn+Qii45/uLUzS7Hjfd/DXbcaAiRkoMwnJXAXShbpJiP2xwmr7yuVF0kR0cnvt0SI+IPZjsOH8MziSYQQ==
-  /react-sidebar/3.0.2_react-dom@16.9.0+react@16.9.0:
-    dependencies:
-      '@babel/runtime': 7.6.3
-      prop-types: 15.7.2
-      react: 16.9.0
-      react-dom: 16.9.0_react@16.9.0
-    dev: false
-    peerDependencies:
-      react: '>=16.4.2'
-      react-dom: '>=16.4.2'
-    resolution:
-      integrity: sha512-LG/JO1cJvdRqSmUT+DOhJrml/b45/UqM9nm8emcgbJb5EKNegKCObZcrRqyzVix42VfFf0odytviAAFEYYTu1Q==
   /react-spinners/0.6.1_react-dom@16.9.0+react@16.9.0:
     dependencies:
       '@emotion/core': 10.0.17_react@16.9.0
@@ -8735,6 +8717,10 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-nRCcW9Sj7NuZwa2XvH9co8NPeXUBhZP7CRKJtU+cS6PW9FpCIFoI5ib0NT1ZrbNuPoRy0ylyCaUL8Gih4LSyFg==
+  /redux-thunk/2.3.0:
+    dev: false
+    resolution:
+      integrity: sha512-km6dclyFnmcvxhAcrQV2AkZmPQjzPDjgVlQtR0EQjxZPyJ0BnMf3in1ryuR8A2qU0HldVRfxYXbFSKlI3N7Slw==
   /redux/4.0.4:
     dependencies:
       loose-envify: 1.4.0
@@ -10798,8 +10784,8 @@ specifiers:
   react-picky: ^4.5.2
   react-redux: ^7.1.1
   react-scripts: 3.1.2
-  react-sidebar: ^3.0.2
   react-spinners: ^0.6.1
   reactstrap: ^8.0.1
   redux: ^4.0.4
+  redux-thunk: ^2.3.0
   throttle-debounce: ^2.1.0

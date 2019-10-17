@@ -7,11 +7,11 @@ import "./companyMap.css";
 
 class CompanyMap extends Component {
   render() {
-    const { userPosition, zoom, haveUserLoacation, markerData } = this.props;
+    const { userPosition, haveUserLoacation, markerData } = this.props;
 
     return (
       <div className="map-container">
-        <Map className="map" center={userPosition} zoom={zoom}>
+        <Map className="map" center={userPosition} zoom={14}>
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -41,7 +41,6 @@ class CompanyMap extends Component {
 const mapStateToProps = state => ({
   haveUserLoacation: state.appDataReducer.userPosition.haveUserLoacation,
   userPosition: [state.appDataReducer.userPosition.latitude, state.appDataReducer.userPosition.longitude],
-  zoom: state.locationReducer.zoom,
   markerData: state.appDataReducer.markerData || []
 });
 
