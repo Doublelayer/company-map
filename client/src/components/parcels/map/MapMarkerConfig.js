@@ -22,12 +22,12 @@ export const markerConfig = {
     popupAnchor: [0, -20]
   }),
   Transport_und_Logistik: L.icon({
-    iconUrl: require("./markers/yellow.svg"),
+    iconUrl: require("../../../assets/markers/yellow.svg"),
     iconSize: [50, 82],
     popupAnchor: [0, -20]
   }),
   Pharma_und_Medizintechnik: L.icon({
-    iconUrl: require("./markers/cyan.svg"),
+    iconUrl: require("../../../assets/markers/cyan.svg"),
     iconSize: [50, 82],
     popupAnchor: [0, -20]
   })
