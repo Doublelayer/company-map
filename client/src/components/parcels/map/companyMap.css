@@ -1,3 +1,7 @@
+.leaflet-touch {
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
 .map-container {
   max-height: -webkit-fill-available;
   height: 100vh;
@@ -6,4 +10,19 @@
 .map {
   min-height: -webkit-fill-available;
   z-index: 0;
+}
+
+.map-control {
+  margin: 10px;
+  position: absolute;
+  top: 70px;
+  left: 0;
+  width: 35px;
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.map-control:hover {
+  opacity: 0.8;
 }
