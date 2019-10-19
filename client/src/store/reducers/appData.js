@@ -3,8 +3,8 @@ import { APP_DATA } from "../constants/actionTypes";
 const initialState = {
   userPosition: {
     haveUserLoacation: false,
-    latitude: "",
-    longitude: "",
+    latitude: 0,
+    longitude: 0,
     city: ""
   }
 };
