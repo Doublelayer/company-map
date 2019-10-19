@@ -52,12 +52,12 @@ export function setNewUserPositonBy(cityName) {
 }
 
 function getCoordinatesAndCityFromIP() {
-  return fetch("http://ip-api.com/json/?lang=de")
+  return fetch("https://ipapi.co/json/")
     .then(res => res.json())
     .then(res => {
       return {
-        latitude: res.lat,
-        longitude: res.lon,
+        latitude: res.latitude,
+        longitude: res.longitude,
         city: res.city
       };
     })
