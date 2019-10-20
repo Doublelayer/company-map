@@ -12,9 +12,17 @@ import "react-leaflet-markercluster/dist/styles.min.css";
 import "./companyMap.css";
 
 class CompanyMap extends Component {
+  toggleMarkerType() {
+    const { toogleGroupedMarkers } = this.props;
+    // toogleGroupedMarkers().then(() => console.log(""));
+  }
+
   render() {
     const { userPosition, haveUserLoacation, markerData, toogleGroupedMarkers, showGroupedMarkers } = this.props;
     const ShowGroupedMarkers = showGroupedMarkers ? MarkerClusterGroup : "div";
+    const groupedControlImg = showGroupedMarkers
+      ? "https://www.pinclipart.com/picdir/middle/46-460577_maps-vector-graphic-google-maps-icon-android-clipart.png"
+      : "https://i.stack.imgur.com/g1erW.png";
     return (
       <div className="map-container">
         <Map className="map" center={userPosition} zoom={12}>
@@ -45,11 +53,7 @@ class CompanyMap extends Component {
             ))}
           </ShowGroupedMarkers>
         </Map>
-        <img
-          src="https://www.pinclipart.com/picdir/middle/46-460577_maps-vector-graphic-google-maps-icon-android-clipart.png"
-          className="map-control"
-          onClick={toogleGroupedMarkers}
-        />
+        <img src={groupedControlImg} className="map-control" onClick={this.toggleMarkerType.bind(this)} />
       </div>
     );
   }
