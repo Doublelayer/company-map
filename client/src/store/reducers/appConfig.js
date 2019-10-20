@@ -1,13 +1,23 @@
-import { APP_CONFIG } from "../constants/actionTypes";
+import { APP_CONFIG, GROUPED_MARKERS } from "../constants/actionTypes";
 
 import { isMobile } from "react-device-detect";
 
-const appConfigReducer = (state = {}, action) => {
+const initialState = {
+  groupedMarkers: true,
+  isMobile: isMobile
+};
+
+const appConfigReducer = (state = initialState, action) => {
   switch (action.type) {
     case APP_CONFIG:
       return {
         ...state,
         isMobile: isMobile
+      };
+    case GROUPED_MARKERS:
+      return {
+        ...state,
+        groupedMarkers: !state.groupedMarkers
       };
     default:
       return state;

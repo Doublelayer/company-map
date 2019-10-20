@@ -6,7 +6,8 @@ dependencies:
   react: 16.9.0
   react-device-detect: 1.9.10_react-dom@16.9.0+react@16.9.0
   react-dom: 16.9.0_react@16.9.0
-  react-leaflet: 2.4.0_c98554fc27dcc3f6c1e35b7c868e405a
+  react-leaflet: 2.0.0_c98554fc27dcc3f6c1e35b7c868e405a
+  react-leaflet-markercluster: 2.0.0-rc3_f7f0fc4323f9070b5ed569f48a51e952
   react-loading-overlay: 1.0.1_react-dom@16.9.0+react@16.9.0
   react-picky: 4.5.2_1d862d7c3575cb6e28b49834d246a21d
   react-redux: 7.1.1_react@16.9.0+redux@4.0.4
@@ -6265,6 +6266,10 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-7AO748wWnIhNqAuaty2ZWHkQHRSNfPVIsPIfwEOWO22AmaoVrWavlOcMR5nzTLNYvp36X220/maaRsrec1G65A==
+  /lodash-es/4.17.15:
+    dev: false
+    resolution:
+      integrity: sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
   /lodash._reinterpolate/3.0.0:
     dev: false
     resolution:
@@ -8424,22 +8429,36 @@ packages:
     dev: false
     resolution:
       integrity: sha512-tJBzzzIgnnRfEm046qRcURvwQnZVXmuCbscxUO5RWrGTXpon2d4c8mI0D8WE6ydVIm29JiLB6+RslkIvym9Rjw==
-  /react-leaflet/2.4.0_c98554fc27dcc3f6c1e35b7c868e405a:
+  /react-leaflet-markercluster/2.0.0-rc3_f7f0fc4323f9070b5ed569f48a51e952:
     dependencies:
-      '@babel/runtime': 7.6.0
-      fast-deep-equal: 2.0.1
-      hoist-non-react-statics: 3.3.0
       leaflet: 1.5.1
+      leaflet.markercluster: 1.4.1_leaflet@1.5.1
+      prop-types: 15.7.2
+      react-leaflet: 2.0.0_c98554fc27dcc3f6c1e35b7c868e405a
+    dev: false
+    peerDependencies:
+      leaflet: ^1.3.0
+      leaflet.markercluster: ^1.3.0
+      prop-types: ^15.6.2
+      react-leaflet: ^2.0.0
+    resolution:
+      integrity: sha512-9Z02sZTte8UPqXdm2R5HnLs24MGQgVc1Fdy2R8KPiZQv+sgUCDoFwMUxiVxyqLjGB643RI33MOQVif8kQCkELg==
+  /react-leaflet/2.0.0_c98554fc27dcc3f6c1e35b7c868e405a:
+    dependencies:
+      hoist-non-react-statics: 2.5.5
+      leaflet: 1.5.1
+      lodash: 4.17.15
+      lodash-es: 4.17.15
       react: 16.9.0
       react-dom: 16.9.0_react@16.9.0
       warning: 4.0.3
     dev: false
     peerDependencies:
-      leaflet: ^1.5.1
-      react: ^16.8.0
-      react-dom: ^16.8.0
+      leaflet: ^1.3.0
+      react: ^16.3.0
+      react-dom: ^16.3.0
     resolution:
-      integrity: sha512-ex9MAz2cUAmdUucsjv180OYszdqxHIyEwzWAuMOOuxE7yUmRscxZKR5h0f+vG4shR+SekZYUBk0+gCv8apRADQ==
+      integrity: sha512-2GUMPNEGJ67nNcaVFiS+X7xSF1Gujq1u+oAcJM4iWlpt0NOTYygR6355wKWVlDroIIg6axorUinwBWM+O5t2vw==
   /react-lifecycles-compat/3.0.4:
     dev: false
     resolution:
@@ -10779,7 +10798,8 @@ specifiers:
   react: ^16.9.0
   react-device-detect: ^1.9.10
   react-dom: ^16.9.0
-  react-leaflet: ^2.4.0
+  react-leaflet: 2.0.0
+  react-leaflet-markercluster: 2.0.0-rc3
   react-loading-overlay: ^1.0.1
   react-picky: ^4.5.2
   react-redux: ^7.1.1
