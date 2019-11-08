@@ -8,53 +8,6 @@ body {
   height: 100%;
 }
 
-.search-form {
-  margin: 50px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 300px;
-  -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
-}
-.btn-form {
-  margin-top: 20px;
-  width: -webkit-fill-available;
-}
-
-.card-header {
-  text-align: center;
-}
-
-.card-text {
-  font-weight: bold;
-  text-align: center;
-}
-
-.card-body {
-  padding: 0;
-  margin: 1rem;
-}
-
-.picky-selector {
-  margin-bottom: 40px;
-}
-
-@media only screen and (max-width: 1050px) {
-  .search-form {
-    height: max-content;
-    margin: auto;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-  }
-  .picky-selector {
-    margin-bottom: 10px;
-  }
-}
-
 .show {
   display: block;
 }

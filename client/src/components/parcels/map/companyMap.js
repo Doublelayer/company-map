@@ -48,7 +48,7 @@ class CompanyMap extends Component {
             ))}
           </ShowGroupedMarkers>
         </Map>
-        <img src={groupedControlImg} className="map-control" onClick={toogleGroupedMarkers} />
+        <img src={groupedControlImg} alt="" className="map-control" onClick={toogleGroupedMarkers} />
       </div>
     );
   }
